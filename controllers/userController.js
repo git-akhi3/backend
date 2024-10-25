@@ -71,7 +71,8 @@ export const loginUser = async (req, res) => {
                     email: user.email,
                     id: user._id,
                     role: user.role,
-                    permission: user.permission
+                    permission: user.permission,
+                    age: user.age
                 },
             }, process.env.SECRET_KEY, { expiresIn: '1h' });
 
@@ -81,7 +82,8 @@ export const loginUser = async (req, res) => {
                 email: user.email,
                 role: user.role,
                 permission: user.permission,
-                token: token
+                token: token,
+                age: user.age
             });
         } else {
             return res.status(401).json({ message: 'Invalid email or password' });
@@ -160,8 +162,13 @@ export const createUserWithRole = async (req, res) => {
             username,
             email,
             password: hashedPassword,
-            role
+            role,
+            
         });
+        if (role === 'elder') {
+            userData.age = age;
+        }
+      
 
         console.log("User created successfully:", user);
 
